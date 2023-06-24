@@ -3,4 +3,25 @@
   <groupId>TestNG_Kanmani</groupId>
   <artifactId>TestNG_Practice_2023</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  <dependencies>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>4.10.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>7.7.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+	</dependencies>
+  
 </project>
