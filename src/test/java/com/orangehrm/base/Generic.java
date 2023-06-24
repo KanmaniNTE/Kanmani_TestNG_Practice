@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Generic {
 	
 	WebDriver driver;
+	WebDriverWait wait;
+	
 	
 //	************** WebDriver methods ********************************
 	
@@ -44,27 +46,12 @@ public class Generic {
 	}
 
 	public void waitForAlertToBePresent(long seconds) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
 		wait.until(ExpectedConditions.alertIsPresent());
 	}
 
-	public void waitForElementToBeClickableById(String idText, long seconds) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
-		wait.until(ExpectedConditions.elementToBeClickable(By.id(idText)));
-	}
-
-	public void waitForElementToBeClickableByXpath(String xpathText, long seconds) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpathText)));
-	}
-
-	public void waitForElementToBeClickableByClass(String classText, long seconds) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
-		wait.until(ExpectedConditions.elementToBeClickable(By.className(classText)));
-	}
-
 	public void waitForElementToBeClickableByLocator(String locatorName, String classText, long seconds) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
 
 		switch (locatorName) {
 		case "id":
@@ -94,8 +81,13 @@ public class Generic {
 	}
 	
 	public void waitForElementToBeClickable(WebElement ele, long seconds) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
 		wait.until(ExpectedConditions.elementToBeClickable(ele));
+	}
+	
+	public void waitForElementToBeVisible(WebElement ele, long seconds) {
+		wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+		wait.until(ExpectedConditions.visibilityOf(ele));
 	}
 
 

@@ -3,11 +3,13 @@ package com.orangehrm.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.testng.Assert;
 
-public class LoginPage {
+import com.orangehrm.base.Generic;
+
+public class LoginPage extends Generic {
 	
 	WebDriver driver;
+	CommonPage commonPage = new CommonPage();
 	
 	@FindBy(tagName = "h5") 
 	WebElement text_LoginHeader;
@@ -51,6 +53,9 @@ public class LoginPage {
 	@FindBy(xpath = "//button[text() = ' Reset Password ']")
 	WebElement button_resetPassword;
 	
+	@FindBy(tagName = "h6")
+	WebElement text_ResetPasswordLinkSent;
+	
 //	@FindBy()
 //	WebElement ;
 	
@@ -63,7 +68,10 @@ public class LoginPage {
 	
 	public void forgotPassword(String userName) {
 		link_forgotYourPassword.click();
-		
+		waitForElementToBeVisible(text_ResetPasswordHeader, 5);
+		textBox_ForgotPassword_UserName.sendKeys(userName);
+		button_resetPassword.click();
+		commonPage.verifyAPageByWebElement(text_ResetPasswordLinkSent, "Reset Password link sent successfully");
 	}
 	
 
