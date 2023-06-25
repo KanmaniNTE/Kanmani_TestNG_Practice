@@ -1,24 +1,21 @@
 package com.orangehrm.pages;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.testng.Assert;
 
 public class CommonPage {
 	WebDriver driver;
 	
 	
-	public void verifyAPageByTitle(String title) {
-		Assert.assertEquals(driver.getTitle(), title);
-	}
-	
-	public void verifyAPageByWebElement(WebElement ele, String text) {
-		Assert.assertEquals(ele.getText(), text);
-	}
-	
 	@FindBy(xpath = "//div[contains(@class,'header-title')]")
-	WebElement header_Title;
+//	WebElement header_Title;
+	WebElement text_DashBoardTitle;
 	
 	@FindBy(xpath = "//div[contains(@class,'search')]")
 	WebElement textBox_Search;
@@ -56,9 +53,32 @@ public class CommonPage {
 	@FindBy(xpath = "//a[contains(@href,'buzz')]")
 	WebElement link_Buzz;
 	
+	@FindBys(@FindBy(xpath="//ul[@class = 'oxd-main-menu']/li//span"))
+	List<WebElement> link_orangehrmAllPages;
+	
 //	@FindBy()
 //	WebElement ;
 //	@FindBy()
 //	WebElement ;
+	
+	public void verifyAPageByTitle(String title) {
+		Assert.assertEquals(driver.getTitle(), title);
+	}
+	
+	public void verifyAPageByWebElement(WebElement ele, String text) {
+		Assert.assertEquals(ele.getText(), text);
+	}
+	
+	public void goToGivenPageInOrangehrm(String pageName) {
+//		List<WebElement> pageLinks = driver.findElements(By.xpath("//ul[@class = 'oxd-main-menu']/li//span"));
+		
+		for(WebElement eachPageLink: link_orangehrmAllPages) {
+			if(eachPageLink.getText().equalsIgnoreCase(pageName)) {
+				eachPageLink.click();
+			}
+		}
+	}
+	
+	
 
 }

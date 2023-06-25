@@ -16,6 +16,9 @@ public class Generic {
 	
 //	************** WebDriver methods ********************************
 	
+	public void clickElementUsingDynamicXpath(String xpath) {
+		driver.findElement(By.xpath(xpath)).click();
+	}
 	
 //	************** WebElement methods ********************************
 	
