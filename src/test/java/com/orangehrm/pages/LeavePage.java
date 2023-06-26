@@ -1,5 +1,9 @@
 package com.orangehrm.pages;
 
-public class LeavePage {
+import org.openqa.selenium.WebDriver;
 
+public class LeavePage {
+public LeavePage(WebDriver driver) {
+	
+}
 }

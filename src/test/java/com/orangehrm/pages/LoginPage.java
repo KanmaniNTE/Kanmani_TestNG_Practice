@@ -7,7 +7,9 @@ import org.openqa.selenium.support.FindBy;
 import com.orangehrm.base.Generic;
 
 public class LoginPage extends Generic {
-	
+	public LoginPage(WebDriver driver) {
+		
+	}
 	WebDriver driver;
 	CommonPage commonPage = new CommonPage();
 	

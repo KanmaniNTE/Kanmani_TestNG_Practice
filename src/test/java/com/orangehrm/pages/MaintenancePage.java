@@ -1,5 +1,9 @@
 package com.orangehrm.pages;
 
-public class MaintenancePage {
+import org.openqa.selenium.WebDriver;
 
+public class MaintenancePage {
+public MaintenancePage(WebDriver driver) {
+	
+}
 }

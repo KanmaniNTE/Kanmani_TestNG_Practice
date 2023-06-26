@@ -1,5 +1,9 @@
 package com.orangehrm.pages;
 
-public class TimePage {
+import org.openqa.selenium.WebDriver;
 
+public class TimePage {
+public TimePage(WebDriver driver) {
+	
+}
 }

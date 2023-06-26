@@ -1,5 +1,9 @@
 package com.orangehrm.pages;
 
-public class DirectoryPage {
+import org.openqa.selenium.WebDriver;
 
+public class DirectoryPage {
+public DirectoryPage(WebDriver driver) {
+	
+}
 }

@@ -14,6 +14,9 @@ import com.orangehrm.base.Generic;
 public class PIMPage {
 	WebDriver driver;
 	Generic generic = new Generic();
+	public PIMPage(WebDriver driver) {
+		
+	}
 
 	public void verifyAPageByTitle(String title) {
 		Assert.assertEquals(driver.getTitle(), title);

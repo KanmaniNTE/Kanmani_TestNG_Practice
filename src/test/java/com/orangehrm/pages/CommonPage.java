@@ -12,6 +12,10 @@ import org.testng.Assert;
 public class CommonPage {
 	WebDriver driver;
 	
+	public CommonPage(WebDriver driver) {
+		
+	}
+	
 	
 	@FindBy(xpath = "//div[contains(@class,'header-title')]")
 //	WebElement header_Title;
