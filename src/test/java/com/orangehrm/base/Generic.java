@@ -20,62 +20,101 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.BeforeTest;
+
+import com.orangehrm.utilities.PropertyFileReading;
 
 public class Generic {
-	
+
 	WebDriver driver;
 	WebDriverWait wait;
 	Alert alert = driver.switchTo().alert();
-	
-	
+	static String ProjectPropertyFilePath = ".\\Project.properties";
+	PropertyFileReading propertyfile = new PropertyFileReading();
+
 //	************** WebDriver methods ********************************
-	
+
 	public void clickElementUsingDynamicXpath(String xpath) {
 		driver.findElement(By.xpath(xpath)).click();
+
 	}
-	
+
+	public void quitBrowser() {
+		driver.close();
+		driver.quit();
+	}
+
+	public void closeCurrentActionWindow() {
+		driver.close();
+	}
+
+	public String getCurrentUrl() {
+		return driver.getCurrentUrl();
+	}
+
+	public void goBackToPreviousWebPage() {
+		driver.navigate().back();
+	}
+
+
+
 //	************** WebElement methods ********************************
-	public void OpenBrowserWithParameter(String browserName) {
-		switch(browserName) {
-			case "Chrome":
-				System.setProperty("webdriver.chrome.driver", "C:\\Users\\LENOVO\\git\\VinothiniJavaProject\\drivers\\chromedriver_107.exe");
-				driver = new ChromeDriver();
-				break;
-			case "Firefox":
-				System.setProperty("webdriver.chrome.driver", "C:\\Users\\LENOVO\\git\\VinothiniJavaProject\\drivers\\geckodriver.exe");
-				driver = new ChromeDriver();
-				break;
+	@BeforeTest
+	public WebDriver LaunchApplication() throws Exception {
+
+		String browserName = propertyfile.readApropertyAndReturnItsValue("browser", ProjectPropertyFilePath);
+
+		switch (browserName.toLowerCase()) {
+		case "chrome":
+			System.setProperty("webdriver.chrome.driver",
+					".\\src\\test\\resources\\drivers\\chromedriver_114.exe");
+			driver = new ChromeDriver();
+			break;
+		case "firefox":
+			System.setProperty("webdriver.chrome.driver",
+					".\\src\\test\\resources\\drivers\\chromedriver_114.exe");
+			driver = new ChromeDriver();
+			break;
 		}
-		driver.manage().window().maximize();
-		driver.get("");
-		driver.findElement(By.id("email")).sendKeys("Sathya08ece@gmail.com");
-		driver.findElement(By.id("pass")).sendKeys("TestSathya@123");
-		driver.findElement(By.name("login")).click();
+
+		return getDriver();
 	}
-	
+
+	public WebDriver getDriver() {
+		if (driver != null) {
+			return driver;
+		}
+		return driver;
+	}
+
+	public void setDriver(WebDriver driver) {
+		driver = driver;
+	}
+
 	public void browserLaunch() {
-		System.setProperty("webdriver.chrome.driver", "C:\\Users\\LENOVO\\git\\VinothiniJavaProject\\drivers\\chromedriver_107.exe");
+		System.setProperty("webdriver.chrome.driver",
+				"C:\\Users\\LENOVO\\git\\VinothiniJavaProject\\drivers\\chromedriver_107.exe");
 		driver = new ChromeDriver();
 	}
-	
+
 	public void maximizeBrowserWindow() {
 		driver.manage().window().maximize();
 	}
-	
+
 	public void launchBrowserAndMaximizeWindow() {
 		browserLaunch();
 		maximizeBrowserWindow();
 	}
-	
+
 	public void launchApplication(String url) {
 		driver.get(url);
 	}
-	
+
 	public void launchApplicationUsingProp() throws Exception {
 //		driver.get("facebook.com");
 //		driver.get(commonMethods.readAndReturnProperty("facebookURL"));
 	}
-	
+
 //	************** Robot Class methods ********************************
 	public void uploadAFileUsingSendKeys(By by, String pathOfFileToBeUploaded) {
 		driver.findElement(by).sendKeys(pathOfFileToBeUploaded);
@@ -122,17 +161,17 @@ public class Generic {
 				robo.keyPress(KeyEvent.VK_A);
 				robo.keyRelease(KeyEvent.VK_A);
 				break;
-				
+
 			case "b":
 				robo.keyPress(KeyEvent.VK_B);
 				robo.keyRelease(KeyEvent.VK_B);
 				break;
-				
+
 			case "c":
 				robo.keyPress(KeyEvent.VK_C);
 				robo.keyRelease(KeyEvent.VK_C);
 				break;
-				
+
 			case " ":
 				robo.keyPress(KeyEvent.VK_SPACE);
 				robo.keyRelease(KeyEvent.VK_SPACE);
@@ -158,24 +197,23 @@ public class Generic {
 			robo.keyRelease(KeyEvent.VK_SHIFT);
 			break;
 		}
-		}
-	
+	}
+
 //	************** Actions Class methods ********************************
 	public void scrollToAnElementUsingActions(WebElement element) {
 		Actions actions = new Actions(driver);
 		actions.scrollToElement(element).build().perform();
 	}
-	
+
 	public void rightClickAnElement(WebElement ele) {
 		Actions actions = new Actions(driver);
 		actions.contextClick(ele).build().perform();
 	}
-	
+
 	public void rightClickOnMouse() {
 		Actions actions = new Actions(driver);
 		actions.contextClick().build().perform();
 	}
-	
 
 	public void launchBrowser(String browserName) {
 		System.setProperty("webdriver.chrome.driver",
@@ -204,44 +242,42 @@ public class Generic {
 //			actions.keyDown(Keys.a)
 		}
 	}
-	
+
 	public void typeInCaptialUsingActions(String text) {
 		Actions actions = new Actions(driver);
 		actions.keyDown(Keys.SHIFT).sendKeys(text).build().perform();
 	}
 
-	
 //	************** Alert methods ********************************
 	public void acceptAlert() {
 		Alert alert = driver.switchTo().alert();
 		alert.accept();
 	}
-	
+
 	public void dismissAlert() {
 		driver.switchTo().alert().dismiss();
 	}
-	
+
 	public void getTextFromAlert() {
 		try {
 			driver.switchTo().alert().getText();
-		}
-		catch(UnhandledAlertException e) {
+		} catch (UnhandledAlertException e) {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	public void sendTextToAlert(String text) {
 		alert.sendKeys(text);
 	}
-	
+
 	public void sendTextToAlert1(String text) {
 		try {
-		alert.sendKeys(text);
-		}
-		catch(UnhandledAlertException e) {
+			alert.sendKeys(text);
+		} catch (UnhandledAlertException e) {
 			System.out.println(e.getMessage());
 		}
-		}
+	}
+
 //	************** Frames methods ********************************
 	public int noOfiFramesInWebPage() {
 		int noOfiFramesdriver = driver.findElements(By.tagName("iframe")).size();
@@ -259,10 +295,23 @@ public class Generic {
 	public void switchToMainWebPage() {
 		driver.switchTo().defaultContent();
 	}
-	
+
 	public void clickAnElement(WebElement ele) {
 		ele.click();
 	}
+	
+	public void switchToFrameUsingFrameIndex(int index) {
+		driver.switchTo().frame(index);
+	}
+
+	public void switchToFrameUsingFrameName(String frameName) {
+		driver.switchTo().frame(frameName);
+	}
+
+	public void switchToFrameUsingWebElementName(WebElement elementName) {
+		driver.switchTo().frame(elementName);
+	}
+
 //	************** WindowHandling methods ********************************
 	public void closeAllChildWindows() {
 		String parentWindowHandle = driver.getWindowHandle();
@@ -310,23 +359,23 @@ public class Generic {
 		}
 	}
 //	************** Scrolling methods ********************************
-	
+
 //	************** DropDown methods ********************************
 	public void chooseOptionByValue(WebElement ele, String value) {
 		Select select = new Select(ele);
 		select.selectByValue(value);
 	}
-	
+
 	public void selectOptionByIndex(WebElement ele, int optionIndex) {
 		Select select = new Select(ele);
-		select.selectByIndex(optionIndex);	
+		select.selectByIndex(optionIndex);
 	}
-	
+
 	public void selectOptionByVisibleText(WebElement ele, String value) {
 		Select select = new Select(ele);
-		select.selectByVisibleText(value);	
+		select.selectByVisibleText(value);
 	}
-	
+
 	public void printAllOptionFromADropDown(WebElement ele) {
 		Select select = new Select(ele);
 		List<WebElement> courseAllOptions = select.getOptions();
@@ -335,26 +384,24 @@ public class Generic {
 		}
 
 	}
-	
+
 	public void validateAnOptionPresentInDropDown(WebElement ele, String optionName) {
 		Select select = new Select(ele);
 		List<WebElement> courseAllOptions = select.getOptions();
 		for (WebElement each : courseAllOptions) {
-			if(each.getText().equalsIgnoreCase(optionName)) {
-				System.out.println("Given option: "+optionName+ " is present in the drop down");
+			if (each.getText().equalsIgnoreCase(optionName)) {
+				System.out.println("Given option: " + optionName + " is present in the drop down");
 			}
 		}
 	}
-	
+
 	public void deSelectOptionByValue(WebElement ele, String value) {
 		Select select = new Select(ele);
 		select.deselectByValue(value);
 	}
 
 //	**************  methods ********************************
-	
-	
-	
+
 //	************** Wait methods ********************************
 	public void maximizeAWindow() {
 		driver.manage().window().maximize();
@@ -394,16 +441,15 @@ public class Generic {
 
 		}
 	}
-	
+
 	public void waitForElementToBeClickable(WebElement ele, long seconds) {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
 		wait.until(ExpectedConditions.elementToBeClickable(ele));
 	}
-	
+
 	public void waitForElementToBeVisible(WebElement ele, long seconds) {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
 		wait.until(ExpectedConditions.visibilityOf(ele));
 	}
-
 
 }

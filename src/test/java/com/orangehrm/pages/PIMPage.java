@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 import com.orangehrm.base.Generic;
@@ -15,16 +16,11 @@ public class PIMPage {
 	WebDriver driver;
 	Generic generic = new Generic();
 	public PIMPage(WebDriver driver) {
-		
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
 	}
 
-	public void verifyAPageByTitle(String title) {
-		Assert.assertEquals(driver.getTitle(), title);
-	}
-
-	public void verifyAPageByWebElement(WebElement ele, String text) {
-		Assert.assertEquals(ele.getText(), text);
-	}
+	
 
 	@FindBy(xpath = "//li[contains(@class,'tab --parent')]")
 	WebElement list_Configuration;

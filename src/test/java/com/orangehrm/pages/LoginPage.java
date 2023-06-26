@@ -3,15 +3,20 @@ package com.orangehrm.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import com.orangehrm.base.Generic;
 
 public class LoginPage extends Generic {
+	
 	public LoginPage(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+		//to show the webelements to driver.
 		
 	}
 	WebDriver driver;
-	CommonPage commonPage = new CommonPage();
+	CommonPage commonPage = new CommonPage(driver);
 	
 	@FindBy(tagName = "h5") 
 	WebElement text_LoginHeader;
