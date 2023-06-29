@@ -103,6 +103,7 @@ public class PIMPage {
 			}
 		}
 //		write code for Yes delete
+		driver.findElement(By.xpath("//div[@class='orangehrm-modal-footer']//following::i")).click();
 	}
 
 //	selectGivenRow
