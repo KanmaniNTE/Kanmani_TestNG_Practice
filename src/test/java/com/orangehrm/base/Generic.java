@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -20,16 +21,18 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
 import com.orangehrm.utilities.PropertyFileReading;
 
 public class Generic {
 
-	WebDriver driver;
+	private WebDriver driver;
 	WebDriverWait wait;
-	Alert alert = driver.switchTo().alert();
-	static String ProjectPropertyFilePath = ".\\Project.properties";
+	Alert alert ;
+	static String projectPropertyFilePath = ".\\Project.properties";
 	PropertyFileReading propertyfile = new PropertyFileReading();
 
 //	************** WebDriver methods ********************************
@@ -56,13 +59,20 @@ public class Generic {
 		driver.navigate().back();
 	}
 
+	public void pause(Integer seconds) {
+		try {
+			TimeUnit.SECONDS.sleep(seconds);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
 
 //	************** WebElement methods ********************************
 	@BeforeTest
-	public WebDriver LaunchApplication() throws Exception {
+	public WebDriver launchApplication() throws Exception {
 
-		String browserName = propertyfile.readApropertyAndReturnItsValue("browser", ProjectPropertyFilePath);
+		String browserName = propertyfile.readApropertyAndReturnItsValue(projectPropertyFilePath, "browser");
 
 		switch (browserName.toLowerCase()) {
 		case "chrome":
@@ -76,6 +86,9 @@ public class Generic {
 			driver = new ChromeDriver();
 			break;
 		}
+		
+		openApplication();
+		maximizeBrowserAndImplicitWait(15);
 
 		return getDriver();
 	}
@@ -88,32 +101,31 @@ public class Generic {
 	}
 
 	public void setDriver(WebDriver driver) {
-		driver = driver;
+		this.driver = driver;
+	}
+	
+	@AfterTest
+	public void closeCurrentBrowser() {
+		getDriver().close();
+	}
+	
+	@AfterSuite
+	public void closeAllBrowsers() {
+		getDriver().quit();
 	}
 
-	public void browserLaunch() {
-		System.setProperty("webdriver.chrome.driver",
-				"C:\\Users\\LENOVO\\git\\VinothiniJavaProject\\drivers\\chromedriver_107.exe");
-		driver = new ChromeDriver();
+
+	public void maximizeBrowserAndImplicitWait(long implicitWaitSeconds) {
+		getDriver().manage().window().maximize();
+		getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitSeconds));
 	}
 
-	public void maximizeBrowserWindow() {
-		driver.manage().window().maximize();
+
+	public void openApplication() throws Exception {
+		String url = propertyfile.readApropertyAndReturnItsValue(projectPropertyFilePath, "demoOrangeHRMUrl");
+		getDriver().get(url);
 	}
 
-	public void launchBrowserAndMaximizeWindow() {
-		browserLaunch();
-		maximizeBrowserWindow();
-	}
-
-	public void launchApplication(String url) {
-		driver.get(url);
-	}
-
-	public void launchApplicationUsingProp() throws Exception {
-//		driver.get("facebook.com");
-//		driver.get(commonMethods.readAndReturnProperty("facebookURL"));
-	}
 
 //	************** Robot Class methods ********************************
 	public void uploadAFileUsingSendKeys(By by, String pathOfFileToBeUploaded) {
@@ -249,28 +261,45 @@ public class Generic {
 	}
 
 //	************** Alert methods ********************************
+	
+//	we can write like this 
+//	call this method first and accept or dismiss or getText from alert
+	public void switchToAlert() {
+		alert = getDriver().switchTo().alert();
+	}
+	
+	
 	public void acceptAlert() {
-		Alert alert = driver.switchTo().alert();
+//		alert = getDriver().switchTo().alert();
+		alert.accept();
+	}
+	
+//	we can write like this too. 
+//	this time, you dont need to call switchToAlert() method 
+	public void acceptAlert2() {
+		alert = getDriver().switchTo().alert();
 		alert.accept();
 	}
 
 	public void dismissAlert() {
-		driver.switchTo().alert().dismiss();
+		getDriver().switchTo().alert().dismiss();
 	}
 
 	public void getTextFromAlert() {
 		try {
-			driver.switchTo().alert().getText();
+			getDriver().switchTo().alert().getText();
 		} catch (UnhandledAlertException e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
 	public void sendTextToAlert(String text) {
+		alert = getDriver().switchTo().alert();
 		alert.sendKeys(text);
 	}
 
 	public void sendTextToAlert1(String text) {
+		alert = getDriver().switchTo().alert();
 		try {
 			alert.sendKeys(text);
 		} catch (UnhandledAlertException e) {
@@ -448,7 +477,7 @@ public class Generic {
 	}
 
 	public void waitForElementToBeVisible(WebElement ele, long seconds) {
-		wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+		wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
 		wait.until(ExpectedConditions.visibilityOf(ele));
 	}
 

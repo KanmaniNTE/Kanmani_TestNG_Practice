@@ -9,14 +9,16 @@ import com.orangehrm.base.Generic;
 
 public class LoginPage extends Generic {
 	
+	WebDriver driver;
+//	CommonPage commonPage = new CommonPage(driver);
+	
 	public LoginPage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
-		//to show the webelements to driver.
+//		PageFactory.initElements(driver, LoginPage.class);
+//		to give intro of the webelements to driver.
 		
 	}
-	WebDriver driver;
-	CommonPage commonPage = new CommonPage(driver);
 	
 	@FindBy(tagName = "h5") 
 	WebElement text_LoginHeader;
@@ -63,14 +65,16 @@ public class LoginPage extends Generic {
 	@FindBy(tagName = "h6")
 	WebElement text_ResetPasswordLinkSent;
 	
-//	@FindBy()
-//	WebElement ;
+	@FindBy(className = "oxd-userdropdown-name")
+	WebElement loginPageProfile;
 	
 	
 	public void loginOrangeHRM(String userName, String password) {
 		textBox_UserName.sendKeys(userName);
 		textBox_Password.sendKeys(password);
 		button_Login.click();
+		pause(5);
+//		waitForElementToBeVisible(loginPageProfile, 5);
 	}
 	
 	public void forgotPassword(String userName) {
@@ -78,7 +82,7 @@ public class LoginPage extends Generic {
 		waitForElementToBeVisible(text_ResetPasswordHeader, 5);
 		textBox_ForgotPassword_UserName.sendKeys(userName);
 		button_resetPassword.click();
-		commonPage.verifyAPageByWebElement(text_ResetPasswordLinkSent, "Reset Password link sent successfully");
+//		commonPage.verifyAPageByWebElement(text_ResetPasswordLinkSent, "Reset Password link sent successfully");
 	}
 	
 

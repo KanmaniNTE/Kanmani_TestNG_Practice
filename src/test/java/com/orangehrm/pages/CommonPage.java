@@ -10,8 +10,11 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
+import com.orangehrm.base.Generic;
+
 public class CommonPage {
 	WebDriver driver;
+	Generic generic = new Generic();
 	
 	public CommonPage(WebDriver driver) {
 		this.driver = driver;
@@ -75,12 +78,21 @@ public class CommonPage {
 		Assert.assertEquals(ele.getText(), text);
 	}
 	
+	public void verifyPageHeader(String headerTagName, String headerText) {
+		System.out.println("****************"+generic.getDriver().findElement(By.tagName(headerTagName)).isDisplayed());
+		Assert.assertEquals(generic.getDriver().findElement(By.tagName(headerTagName)).getText(), headerText);
+	}
+	
 	public void goToGivenPageInOrangehrm(String pageName) {
 //		List<WebElement> pageLinks = driver.findElements(By.xpath("//ul[@class = 'oxd-main-menu']/li//span"));
 		
+		
 		for(WebElement eachPageLink: link_orangehrmAllPages) {
+			System.out.println(eachPageLink.getText());
 			if(eachPageLink.getText().equalsIgnoreCase(pageName)) {
 				eachPageLink.click();
+				generic.pause(5);
+				verifyPageHeader("h6", pageName);
 			}
 		}
 	}

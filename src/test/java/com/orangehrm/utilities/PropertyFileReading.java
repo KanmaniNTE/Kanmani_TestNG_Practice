@@ -18,7 +18,7 @@ public class PropertyFileReading {
 	
 
 	
-	public static String readApropertyAndReturnItsValue(String propName, String filePath) throws Exception {
+	public String readApropertyAndReturnItsValue(String filePath, String propName) throws Exception {
 		FileReader reader = new FileReader(filePath);
 
 		Properties prop = new Properties();
